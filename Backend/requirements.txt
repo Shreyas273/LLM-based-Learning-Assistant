@@ -6,6 +6,7 @@ google-generativeai
 pdfplumber
 scikit-learn
 numpy
+pandas
 python-dotenv
 pydantic
 python-docx
@@ -19,3 +20,4 @@ SQLAlchemy
 httpx
 pymongo
 dnspython
+networkx
