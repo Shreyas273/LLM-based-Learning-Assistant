@@ -1,19 +1,22 @@
 from datetime import datetime
-from typing import Dict, Any, List
+from typing import Dict, Any, List, Optional
 
 from database.mongo_connection import db
 
 
-# Collections
-users_collection = db["users"]
-interactions_collection = db["interactions"]
+# Collections (None when Mongo is unavailable)
+users_collection = db["users"] if db is not None else None
+interactions_collection = db["interactions"] if db is not None else None
 
 
-def insert_interaction(payload: Dict[str, Any]) -> Dict[str, Any]:
+def insert_interaction(payload: Dict[str, Any]) -> Optional[Dict[str, Any]]:
     """
     Insert a single interaction document.
-    This is the only place that writes to the interactions collection.
+    Returns None when Mongo is unavailable.
     """
+    if interactions_collection is None:
+        return None
+
     doc = {
         "userId": payload["userId"],
         "question": payload["question"],
@@ -34,7 +37,11 @@ def insert_interaction(payload: Dict[str, Any]) -> Dict[str, Any]:
 def find_user_interactions(user_id: str, session_id: str | None = None) -> List[Dict[str, Any]]:
     """
     Return all interactions for a given user (and optional session), sorted by timestamp.
+    Returns [] when Mongo is unavailable.
     """
+    if interactions_collection is None:
+        return []
+
     query: Dict[str, Any] = {"userId": user_id}
     if session_id and session_id != "current":
         query["sessionId"] = session_id
@@ -44,8 +51,6 @@ def find_user_interactions(user_id: str, session_id: str | None = None) -> List[
     interactions = list(cursor)
 
     if session_id == "current":
-        # Limit size for the "current" session view
         interactions = interactions[:50]
 
     return interactions
-

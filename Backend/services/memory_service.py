@@ -12,6 +12,9 @@ def generate_session_report(user_id: str, session_id: str = None) -> Dict:
     """
     try:
         coll = interactions_collection
+        if coll is None:
+            return create_empty_report()
+
         query: Dict[str, Any] = {"userId": user_id}
         if session_id and session_id != "current":
             query["sessionId"] = session_id

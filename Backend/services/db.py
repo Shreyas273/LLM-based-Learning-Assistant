@@ -6,10 +6,9 @@ def init_db() -> None:
     Initialize database connection.
 
     Importing `db` from `database.mongo_connection` ensures that the
-    MongoDB client is created and the application can access the database.
+    MongoDB client is created when available.
     """
-
-    # Trigger a lightweight operation to verify the connection is usable.
-    # This is intentionally minimal to avoid heavy startup work.
+    if db is None:
+        return
     _ = db.list_collection_names()
 

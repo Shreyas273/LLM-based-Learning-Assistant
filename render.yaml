@@ -19,7 +19,7 @@ services:
       - key: MONGO_URI
         sync: false
       - key: CORS_ORIGINS
-        sync: false
+        value: https://llm-learning-web.onrender.com,http://localhost:5173
 
   - type: web
     name: llm-learning-web
