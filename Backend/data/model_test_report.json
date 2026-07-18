@@ -1,0 +1,121 @@
+{
+  "test_date": "2026-01-23T14:36:37.250163",
+  "mastery_model": {
+    "profile_tests": [
+      {
+        "profile": "Beginner Student",
+        "expected": "Weak",
+        "predicted": "Average",
+        "confidence": 0.71,
+        "score": 46.0
+      },
+      {
+        "profile": "Average Student",
+        "expected": "Average",
+        "predicted": "Average",
+        "confidence": 0.52,
+        "score": 63.91776804615796
+      },
+      {
+        "profile": "Advanced Student",
+        "expected": "Strong",
+        "predicted": "Average",
+        "confidence": 0.54,
+        "score": 61.54317802193901
+      },
+      {
+        "profile": "Inconsistent Learner",
+        "expected": "Developing",
+        "predicted": "Good",
+        "confidence": 0.78,
+        "score": 73.00000000000001
+      }
+    ],
+    "accuracy": 0.25
+  },
+  "forgetting_model": {
+    "scenario_tests": [
+      {
+        "scenario": "Just Studied",
+        "hours_after": 1,
+        "expected": 85,
+        "predicted": 88.21676553475783,
+        "error": 3.216765534757826
+      },
+      {
+        "scenario": "One Day Later",
+        "hours_after": 24,
+        "expected": 60,
+        "predicted": 17.503783676113816,
+        "error": 42.49621632388619
+      },
+      {
+        "scenario": "One Week Later",
+        "hours_after": 168,
+        "expected": 30,
+        "predicted": 0.0007004497588683777,
+        "error": 29.999299550241133
+      },
+      {
+        "scenario": "One Month Later",
+        "hours_after": 720,
+        "expected": 15,
+        "predicted": 9.712171864022134e-21,
+        "error": 15.0
+      }
+    ],
+    "average_error": 22.678070352221287
+  },
+  "spaced_repetition": [
+    {
+      "mastery_level": "High Mastery",
+      "retention": 90,
+      "hours_until_review": 9.0,
+      "study_time": "10 minutes"
+    },
+    {
+      "mastery_level": "Medium Mastery",
+      "retention": 70,
+      "hours_until_review": 6.0,
+      "study_time": "15 minutes"
+    },
+    {
+      "mastery_level": "Low Mastery",
+      "retention": 40,
+      "hours_until_review": 16.0,
+      "study_time": "25 minutes"
+    }
+  ],
+  "integration_test": [
+    {
+      "timestamp": "2026-01-23T14:36:37.085194",
+      "mastery_level": "Average",
+      "confidence": 0.72,
+      "retention_prediction": 17.503783676113816
+    },
+    {
+      "timestamp": "2026-01-23T14:36:37.123285",
+      "mastery_level": "Average",
+      "confidence": 0.72,
+      "retention_prediction": 17.503783676113816
+    },
+    {
+      "timestamp": "2026-01-23T14:36:37.164487",
+      "mastery_level": "Good",
+      "confidence": 0.67,
+      "retention_prediction": 17.503783676113816
+    },
+    {
+      "timestamp": "2026-01-23T14:36:37.206479",
+      "mastery_level": "Good",
+      "confidence": 0.66,
+      "retention_prediction": 17.503783676113816
+    },
+    {
+      "timestamp": "2026-01-23T14:36:37.248408",
+      "mastery_level": "Good",
+      "confidence": 0.71,
+      "retention_prediction": 17.503783676113816
+    }
+  ]
+}

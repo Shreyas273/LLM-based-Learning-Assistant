@@ -1,0 +1,27 @@
+# Core dependencies
+fastapi==0.104.1
+uvicorn==0.24.0
+python-dotenv==1.0.0
+pydantic==2.5.0
+
+# PDF processing
+pdfplumber==0.10.3
+
+# AI/ML dependencies
+google-generativeai==0.3.2
+sentence-transformers==2.2.2
+scikit-learn==1.3.2
+numpy==1.24.3
+
+# Data processing
+pandas==2.1.4
+
+# Visualization
+matplotlib==3.8.2
+seaborn==0.13.0
+
+# Scientific computing
+scipy==1.11.4
+
+# Additional ML utilities
+joblib==1.3.2

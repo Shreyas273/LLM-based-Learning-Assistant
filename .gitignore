@@ -1,0 +1,56 @@
+# Environment and secrets
+.env
+.env.*
+!.env.example
+*.pem
+credentials.json
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+.venv/
+env/
+ENV/
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Node
+node_modules/
+dist/
+build/
+.npm
+*.log
+npm-debug.log*
+
+# IDE / OS
+.idea/
+.vscode/
+*.swp
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Local runtime / generated data
+Backend/data/uploads/
+Backend/data/users/
+Backend/data/chroma_db/
+Backend/data/llm_cache.json
+Backend/data/*.db
+Backend/data/*.png
+Backend/services/data/
+*.pkl
+*.joblib
+*.model
+*.db
+
+# Logs and debug artifacts
+*.log
+stderr_*.txt
+main_error.log
+syntax_error.log
