@@ -1,16 +1,33 @@
 import json
+import os
 import re
 from typing import Dict, List, Tuple
 from services.vector_db_service import query_documents
-from sentence_transformers import SentenceTransformer, util
 from services.llm.llm_router import LLMRouter
 
 _llm = LLMRouter()
+_embedding_model = None
+_util = None
 
-# Load embedding model for lightweight similarity check
-# We use a small model for speed. If not available, might need to download.
-# Ideally this should be loaded once globally.
-embedding_model = SentenceTransformer('all-MiniLM-L6-v2')
+
+def _get_embedding_model():
+    """Lazy-load embedding model; skipped when SKIP_LOCAL_EMBEDDINGS=1."""
+    global _embedding_model, _util
+    if os.getenv("SKIP_LOCAL_EMBEDDINGS", "0").lower() in ("1", "true", "yes"):
+        return None, None
+    if _embedding_model is not None:
+        return _embedding_model, _util
+    try:
+        from sentence_transformers import SentenceTransformer, util
+
+        _embedding_model = SentenceTransformer("all-MiniLM-L6-v2")
+        _util = util
+    except Exception as e:
+        print(f"Embedding model unavailable: {e}")
+        _embedding_model = None
+        _util = None
+    return _embedding_model, _util
+
 
 def verify_response_claims(response: str, context: str, query: str = "") -> Dict:
     """
@@ -93,7 +110,9 @@ def semantic_similarity_check(answer: str, context: str) -> float:
     Returns cosine similarity score (0.0 to 1.0).
     """
     try:
-        # Encode
+        embedding_model, util = _get_embedding_model()
+        if embedding_model is None or util is None:
+            return 0.5
         answer_emb = embedding_model.encode(answer, convert_to_tensor=True)
         context_emb = embedding_model.encode(context, convert_to_tensor=True)
         

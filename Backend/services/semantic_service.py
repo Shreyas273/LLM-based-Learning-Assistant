@@ -1,14 +1,28 @@
 from services.vector_db_service import query_documents, query_documents_async
 import logging
+import os
 from typing import Any, Dict, List, Optional, Tuple
 import asyncio
 
-try:
-    from sentence_transformers import CrossEncoder
-    reranker = CrossEncoder('cross-encoder/ms-marco-MiniLM-L-6-v2', max_length=512)
-except Exception as e:
-    logging.warning(f"Could not load CrossEncoder: {e}")
-    reranker = None
+_reranker = None
+_reranker_loaded = False
+
+def _get_reranker():
+    """Lazy-load CrossEncoder; skipped when SKIP_LOCAL_EMBEDDINGS=1."""
+    global _reranker, _reranker_loaded
+    if _reranker_loaded:
+        return _reranker
+    _reranker_loaded = True
+    if os.getenv("SKIP_LOCAL_EMBEDDINGS", "0").lower() in ("1", "true", "yes"):
+        _reranker = None
+        return None
+    try:
+        from sentence_transformers import CrossEncoder
+        _reranker = CrossEncoder("cross-encoder/ms-marco-MiniLM-L-6-v2", max_length=512)
+    except Exception as e:
+        logging.warning(f"Could not load CrossEncoder: {e}")
+        _reranker = None
+    return _reranker
 
 try:
     from rank_bm25 import BM25Okapi
@@ -218,6 +232,7 @@ def retrieve_context(question, file_filter=None, top_k=6, previous_topic=None):
     fused_candidates = sorted(rrf_scores.values(), key=lambda x: x["score"], reverse=True)[:max(top_k * 3, 15)]
 
     # Stage 4: Cross-Encoder Reranking
+    reranker = _get_reranker()
     if reranker:
         rerank_pairs = [[search_query, item["text"]] for item in fused_candidates]
         try:
@@ -327,6 +342,7 @@ async def retrieve_context_async(question, file_filter=None, top_k=6, previous_t
     fused_candidates = sorted(rrf_scores.values(), key=lambda x: x["score"], reverse=True)[:max(top_k * 3, 15)]
 
     # Cross-encoder reranking can be expensive; offload if present.
+    reranker = _get_reranker()
     if reranker:
         rerank_pairs = [[search_query, item["text"]] for item in fused_candidates]
         try:

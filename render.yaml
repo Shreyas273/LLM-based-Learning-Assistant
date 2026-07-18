@@ -12,6 +12,8 @@ services:
         value: "3.11.9"
       - key: LLM_PROVIDER
         value: gemini
+      - key: SKIP_LOCAL_EMBEDDINGS
+        value: "1"
       - key: GEMINI_API_KEY
         sync: false
       - key: MONGO_URI

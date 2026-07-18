@@ -28,6 +28,8 @@ def _get_embedder():
     If not available, returns None and Chroma will use its default embedding behavior.
     """
     global _embedder
+    if os.getenv("SKIP_LOCAL_EMBEDDINGS", "0").lower() in ("1", "true", "yes"):
+        return None
     if _embedder is not None:
         return _embedder
     with _embedder_lock:
