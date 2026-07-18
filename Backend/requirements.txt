@@ -17,3 +17,5 @@ slowapi
 cachetools
 SQLAlchemy
 httpx
+pymongo
+dnspython

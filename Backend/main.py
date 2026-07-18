@@ -22,10 +22,15 @@ app = FastAPI(
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
-# Add CORS middleware
+# CORS: comma-separated origins via CORS_ORIGINS, plus local Vite default
+_cors_env = os.getenv("CORS_ORIGINS", "")
+_cors_origins = [o.strip() for o in _cors_env.split(",") if o.strip()]
+if "http://localhost:5173" not in _cors_origins:
+    _cors_origins.append("http://localhost:5173")
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],  # Allow all origins for development
+    allow_origins=_cors_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
